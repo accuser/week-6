@@ -1,0 +1,8 @@
+sequenceDiagram
+    participant UserAgent
+    participant App 
+    
+    UserAgent ->> +App : GET /
+    Note over UserAgent : HTTP Request
+    App-->> -UserAgent : Hello, World!
+    Note over  App : HTTP Response
