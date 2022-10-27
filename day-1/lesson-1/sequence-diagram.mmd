@@ -1,0 +1,10 @@
+sequenceDiagram
+    autonumber
+
+    participant UserAgent
+    participant Server
+
+    UserAgent ->> +Server : GET /
+    Note over UserAgent : HTTP Request
+    Server-->> -UserAgent : Hello, World!
+    Note over Server : HTTP Response
