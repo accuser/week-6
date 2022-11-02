@@ -1,22 +1,30 @@
 const express = require("express");
-const path = require("path");
 
 // Create an instance of an Express server
 const app = express();
 
-let name = "World";
+app.use(express.json());
+app.use(express.urlencoded({ expand: false }));
+
+let name = null;
 
 // Get a greeting
 app.get("/", (req, res) => {
-  res.send(`Hello, ${name}!`);
+  res.send(`Hello, ${name ?? "World"}!`);
 });
 
 // Set a name
-app.post("/:name", (req, res) => {
-  name = req.params.name;
+app.post("/", (req, res) => {
+  name = req.body["name"];
 
   res.setHeader("location", "/");
-  res.sendStatus(302);
+  res.sendStatus(302); // Found
+});
+
+app.delete("/", (req, res) => {
+  name = null;
+
+  res.sendStatus(204); // No Content
 });
 
 module.exports = app;

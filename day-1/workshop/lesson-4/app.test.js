@@ -22,20 +22,39 @@ describe("app", () => {
     });
   });
 
-  describe("POST /:name", () => {
+  describe("POST /", () => {
     test("redirects", async () => {
-      const { statusCode, headers } = await request(app).post("/Morty");
+      const { statusCode, headers } = await request(app).post("/", {
+        name: "Morty",
+      });
 
       expect(statusCode).toBe(302);
       expect(headers["location"]).toBe("/");
     });
 
     test("updates the server's state", async () => {
-      await request(app).post("/Morty");
+      await request(app).post("/").send({ name: "Morty" });
 
       const { text } = await request(app).get("/");
 
       expect(text).toBe("Hello, Morty!");
+    });
+  });
+
+  describe("DELETE /", () => {
+    test("succeeds", async () => {
+      const { statusCode } = await request(app).delete("/");
+
+      expect(statusCode).toBe(204);
+    });
+
+    test("update the server's state", async () => {
+      await request(app).post("/").send({ name: "Rick" });
+      await request(app).delete("/");
+
+      const { text } = await request(app).get("/");
+
+      expect(text).toBe("Hello, World!");
     });
   });
 });
